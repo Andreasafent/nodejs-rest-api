@@ -13,6 +13,8 @@ const ProductController = require('./controllers/ProductController');
 const AuthController = require('./controllers/AuthController');
 const UserController = require('./controllers/UserController');
 
+const Auth = require("./middlewares/Auth");
+
 const app = express();
 
 app.listen(3000, ()=>{
@@ -33,7 +35,8 @@ app.get('/products/:id', ProductController.show);
 app.put('/products/:id', ProductController.update);
 app.delete('/products/:id', ProductController.deleteProduct);
 
-app.get('/users/me', UserController.me);
+app.use(Auth.authenticate, require("./routes/authenticated"));
+
 
 app.all('*', AppController.notFound)
 
