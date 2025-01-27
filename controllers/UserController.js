@@ -8,9 +8,17 @@ const me = async (req, res) =>{
     })
 }
 
+const logout = async (req, res) =>{
+    redisClient.del(req.token);
+    return res.json({
+        message: 'Logged out successfully'
+    })
+}
+
 
 
 
 module.exports = {
-    me
+    me,
+    logout
 };

@@ -17,7 +17,22 @@ const authenticate = async (req, res, next) => {
     };
 
     const decoded = jwt.verify(token, process.env.APP_SECRET);
-    const user = await User.findById(decoded._id);
+    if(!decoded){
+        return res.status(401).json({
+            message: 'Unauthorized'
+        });
+    }
+
+    const redisToken = await redisClient.get(token);
+    if(!redisToken){
+        return res.status(401).json({
+            message: 'Unauthorized'
+        }); 
+    }
+
+
+
+    const user = await User.findById(redisToken);
 
     if(!user){
         return res.status(401).json({
@@ -26,6 +41,7 @@ const authenticate = async (req, res, next) => {
     };
 
     req.user = user;
+    req.token = token;
     next();
 };
 

@@ -35,11 +35,9 @@ const login = async (req, res) =>{
         })
     };
 
-    const token = jwt.sign({
-        _id: user._id,
-        email: user.email,
-        name: user.name,
-    }, process.env.APP_SECRET)
+    const token = jwt.sign({}, process.env.APP_SECRET);
+
+    redisClient.set(token, user._id.toString());
     
     return res.status(200).json({
         token: token 

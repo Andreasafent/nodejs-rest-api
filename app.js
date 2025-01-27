@@ -3,8 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const redis = require('./config/redis');
 
-mongoose.connect('mongodb://localhost/ecommerce')
+redis.connect()
+
+mongoose
+    .connect(process.env.MONGO_URI)
     .then(()=>console.log('Connected to MongoDB'));
 
 
