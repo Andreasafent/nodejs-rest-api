@@ -40,8 +40,15 @@ const authenticate = async (req, res, next) => {
         });
     };
 
+    const start = process.memoryUsage().heapUsed / 1024;
+
+
     req.user = user;
     req.token = token;
+
+    const end = process.memoryUsage().heapUsed / 1024;
+    console.log(`Used Memory: ${end-start} KB`);
+
     next();
 };
 
